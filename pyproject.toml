@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lab5-text-mining"
+version = "0.75.0"
+description = "Avance reproducible de minería de textos y clasificación de tweets de desastres."
+requires-python = ">=3.11"
+dependencies = [
+  "joblib>=1.4",
+  "jupyterlab>=4.2",
+  "matplotlib>=3.8",
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "scikit-learn>=1.5",
+  "seaborn>=0.13",
+  "vaderSentiment>=3.3.2",
+  "wordcloud>=1.9",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

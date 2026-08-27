@@ -1,0 +1,2 @@
+# Compatibilidad con pip. La definición canónica está en pyproject.toml.
+-e .[test]

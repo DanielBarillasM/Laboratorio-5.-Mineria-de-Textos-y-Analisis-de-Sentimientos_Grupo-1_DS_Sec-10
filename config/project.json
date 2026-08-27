@@ -1,0 +1,19 @@
+{
+  "institucion": "Universidad del Valle de Guatemala",
+  "curso": "Data Science",
+  "seccion": "10",
+  "grupo": "1",
+  "laboratorio": "Laboratorio 5. Minería de Textos y Análisis de Sentimientos",
+  "estado": "Avance 75%",
+  "integrantes": [
+    {"nombre": "Jorge Gabriel Palacios Sales", "carne": "231385"},
+    {"nombre": "Pablo Daniel Barillas Moreno", "carne": "22193"},
+    {"nombre": "Roberto Emiliano Otoniel", "carne": "23968"}
+  ],
+  "dataset": {
+    "nombre": "Natural Language Processing with Disaster Tweets",
+    "competencia": "nlp-getting-started",
+    "archivo": "data/raw/train.csv",
+    "sha256": "61111c6dc31eaffa34d1e1fa62e2395325c9bc3b38bba1941a5f1ed9b3fa60df"
+  }
+}

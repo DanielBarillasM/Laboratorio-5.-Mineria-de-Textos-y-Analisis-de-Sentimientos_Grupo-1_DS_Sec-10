@@ -1,0 +1,15 @@
+marcador,target,porcentaje,categoria
+url_count,0,41.43251957623215,No desastre
+mention_count,0,30.93044679871027,No desastre
+hashtag_count,0,20.405343159834178,No desastre
+exclamation_count,0,12.04514048825426,No desastre
+question_count,0,17.273146015660988,No desastre
+contains_911,0,0.023030861354214647,No desastre
+emoji_like_count,0,8.014739751266697,No desastre
+url_count,1,66.4017120146744,Desastre real
+mention_count,1,20.360745949250994,Desastre real
+hashtag_count,1,26.750229287679613,Desastre real
+exclamation_count,1,5.992051360440232,Desastre real
+question_count,1,8.926933659431366,Desastre real
+contains_911,1,0.09171507184347294,Desastre real
+emoji_like_count,1,10.669520024457352,Desastre real

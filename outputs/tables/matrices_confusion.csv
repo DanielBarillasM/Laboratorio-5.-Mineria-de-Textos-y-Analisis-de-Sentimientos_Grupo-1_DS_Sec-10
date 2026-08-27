@@ -1,0 +1,17 @@
+modelo,real,prediccion,conteo
+Baseline mayoritaria,0,0,869
+Baseline mayoritaria,0,1,0
+Baseline mayoritaria,1,0,654
+Baseline mayoritaria,1,1,0
+Naive Bayes complementario,0,0,749
+Naive Bayes complementario,0,1,120
+Naive Bayes complementario,1,0,174
+Naive Bayes complementario,1,1,480
+Regresión logística,0,0,730
+Regresión logística,0,1,139
+Regresión logística,1,0,146
+Regresión logística,1,1,508
+SVM lineal calibrado,0,0,755
+SVM lineal calibrado,0,1,114
+SVM lineal calibrado,1,0,176
+SVM lineal calibrado,1,1,478

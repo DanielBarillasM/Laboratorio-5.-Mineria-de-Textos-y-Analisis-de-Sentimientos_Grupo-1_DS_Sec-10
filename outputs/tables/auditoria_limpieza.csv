@@ -1,0 +1,11 @@
+indicador,valor
+tweets_totales,7613.0
+texto_original_vacio,0.0
+texto_limpio_vacio,5.0
+palabras_original_promedio,14.903585971364771
+palabras_limpias_promedio,8.185472218573492
+tweets_con_url,3971.0
+tweets_con_mencion,2009.0
+tweets_con_hashtag,1761.0
+tweets_con_911,4.0
+texto_limpio_con_911,4.0
