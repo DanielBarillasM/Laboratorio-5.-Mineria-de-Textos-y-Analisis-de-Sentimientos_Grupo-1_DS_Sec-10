@@ -1,0 +1,4 @@
+etiqueta,regla,fuente
+positivo,compound >= 0.05,Hutto y Gilbert (2014)
+negativo,compound <= -0.05,Hutto y Gilbert (2014)
+neutral,-0.05 < compound < 0.05,Hutto y Gilbert (2014)

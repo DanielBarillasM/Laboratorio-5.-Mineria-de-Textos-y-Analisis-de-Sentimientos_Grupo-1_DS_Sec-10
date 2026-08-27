@@ -34,3 +34,6 @@ reports/*.synctex.gz
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Herramientas externas al proyecto
+.memsearch/

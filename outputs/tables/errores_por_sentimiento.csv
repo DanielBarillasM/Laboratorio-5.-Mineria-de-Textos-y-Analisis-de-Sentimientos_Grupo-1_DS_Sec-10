@@ -1,0 +1,7 @@
+tipo_error,sentiment_label,casos
+Falso negativo,negativo,71
+Falso negativo,neutral,33
+Falso negativo,positivo,42
+Falso positivo,negativo,60
+Falso positivo,neutral,41
+Falso positivo,positivo,38

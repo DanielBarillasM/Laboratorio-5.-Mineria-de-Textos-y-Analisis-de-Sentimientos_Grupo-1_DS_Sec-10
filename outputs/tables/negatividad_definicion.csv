@@ -1,0 +1,12 @@
+indicador,valor
+definicion,"negativity = max(-compound, 0)"
+rango_teorico,"[0, 1]"
+minimo_observado,0.0
+maximo_observado,0.9883
+media,0.2658632339419414
+mediana,0.0
+desviacion,0.3102200624712078
+tweets_con_negatividad_cero,3828
+pct_negatividad_cero,50.28241166425851
+correlacion_spearman_con_neg_vader,0.8937114637684926
+correlacion_spearman_con_target,0.18984305541874916
