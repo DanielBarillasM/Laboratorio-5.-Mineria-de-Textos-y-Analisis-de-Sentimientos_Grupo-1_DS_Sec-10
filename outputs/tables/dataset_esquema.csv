@@ -1,11 +1,11 @@
 variable,tipo,faltantes,faltantes_pct,valores_unicos
 id,int64,0,0.0,7613
-keyword,str,61,0.8012610009194797,221
-location,str,2533,33.27203467752528,3341
-text,str,0,0.0,7503
+keyword,object,61,0.8012610009194797,221
+location,object,2533,33.27203467752528,3341
+text,object,0,0.0,7503
 target,int64,0,0.0,2
-clean_text,str,0,0.0,6772
-char_count,int64,0,0.0,147
+clean_text,object,0,0.0,6772
+char_count,int64,0,0.0,148
 word_count,int64,0,0.0,31
 clean_word_count,int64,0,0.0,22
 unique_word_ratio,float64,0,0.0,97
