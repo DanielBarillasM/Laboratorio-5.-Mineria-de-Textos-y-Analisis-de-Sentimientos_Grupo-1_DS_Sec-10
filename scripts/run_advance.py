@@ -1,4 +1,4 @@
-"""Genera todos los resultados reproducibles del avance 75% del Laboratorio 5."""
+"""Genera la etapa base de EDA, n-gramas y comparación inicial de modelos."""
 
 from __future__ import annotations
 
@@ -306,7 +306,7 @@ def save_model_products(frame: pd.DataFrame):
                 "filas_validacion": len(result.test_indices),
                 "semilla": 42,
                 "representacion": "TF-IDF con unigramas y bigramas",
-                "estado": "preliminar; afinación final pendiente",
+                "estado": "modelo base para la comparación final",
             },
             ensure_ascii=False,
             indent=2,
@@ -396,24 +396,6 @@ def save_sentiment_products(frame: pd.DataFrame) -> pd.DataFrame:
     return sentiment
 
 
-def save_scope() -> None:
-    rows = [
-        ("Descripción y EDA", "Completo", "Avance"),
-        ("Limpieza documentada", "Completo", "Avance"),
-        ("Unigramas, bigramas y trigramas", "Completo", "Avance"),
-        ("Modelos preliminares", "Completo", "Avance"),
-        ("Función para nuevos tweets", "Completo", "Avance"),
-        ("Sentimiento descriptivo", "Preliminar", "Avance"),
-        ("Top 10 positivos y negativos", "Pendiente", "Final"),
-        ("Comparación estadística de sentimiento", "Pendiente", "Final"),
-        ("Variable de negatividad y reentrenamiento", "Pendiente", "Final"),
-        ("Afinación y selección definitiva", "Pendiente", "Final"),
-    ]
-    pd.DataFrame(rows, columns=["componente", "estado", "entrega"]).to_csv(
-        TABLES / "alcance_avance_75.csv", index=False
-    )
-
-
 def main() -> int:
     for directory in (PROCESSED, FIGURES, TABLES, MODELS):
         directory.mkdir(parents=True, exist_ok=True)
@@ -427,10 +409,9 @@ def main() -> int:
     results = save_model_products(frame)
     frame = save_sentiment_products(frame)
     frame.to_csv(PROCESSED / "tweets_preprocesados.csv.gz", index=False, compression="gzip")
-    save_scope()
     print(results.metrics.to_string(index=False))
-    print(f"Modelo preliminar seleccionado: {results.best_model}")
-    print("Avance 75% generado correctamente.")
+    print(f"Modelo base seleccionado: {results.best_model}")
+    print("Etapa base generada correctamente; continúe con scripts/run_final.py.")
     return 0
 
 

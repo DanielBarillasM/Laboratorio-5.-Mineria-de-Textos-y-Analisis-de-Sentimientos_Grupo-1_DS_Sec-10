@@ -16,7 +16,10 @@ __pycache__/
 # Artefactos locales reconstruibles
 data/processed/*
 !data/processed/.gitkeep
-models/
+# El modelo definitivo se versiona para permitir inferencia tras clonar.
+# Los artefactos preliminares permanecen locales.
+models/modelo_preliminar.joblib
+models/metadata.json
 
 # LaTeX temporal
 reports/*.aux
@@ -24,6 +27,8 @@ reports/*.log
 reports/*.out
 reports/*.toc
 reports/*.synctex.gz
+reports/*.fls
+reports/*.fdb_latexmk
 
 # Credenciales y sistema
 .env

@@ -1,9 +1,9 @@
-criterio,puntos,evidencia,generado
-EDA,15,outputs/figures/eda_panorama.png; outputs/tables/eda_por_clase.csv,sí
-Limpieza y preprocesamiento,10,outputs/tables/auditoria_limpieza.csv; outputs/tables/ejemplos_preprocesamiento.csv,sí
-"N-gramas, frecuencias y probabilidades",10,outputs/tables/unigramas_target_*.csv; bigramas_*; trigramas_*,sí
-Modelos clasificadores,15,outputs/tables/metricas_todos_los_modelos.csv; outputs/figures/modelo_final.png,sí
-Función de clasificación,20,outputs/tables/ejemplos_funcion_final.csv; scripts/predict_tweet.py,sí
-Sentimiento positivo/negativo/neutral,10,outputs/tables/sentimiento_distribucion.csv; outputs/figures/sentimiento_final.png,sí
-Variable de negatividad,5,outputs/tables/negatividad_definicion.csv; comparacion_negatividad_diferencias.csv,sí
-Resultados y discusión,15,outputs/tables/analisis_errores.csv; contraste_estadistico.csv; reports/informe_final.pdf,sí
+criterio,puntos,evidencia,generado,faltantes
+EDA,15,outputs/figures/eda_panorama.png; outputs/tables/eda_por_clase.csv,sí,
+Limpieza y preprocesamiento,10,outputs/tables/auditoria_limpieza.csv; outputs/tables/ejemplos_preprocesamiento.csv,sí,
+"N-gramas, frecuencias y probabilidades",10,outputs/tables/unigramas_target_1.csv; outputs/tables/bigramas_target_1.csv; outputs/tables/trigramas_target_1.csv,sí,
+Modelos clasificadores,15,outputs/tables/metricas_todos_los_modelos.csv; outputs/figures/modelo_final.png,sí,
+Función de clasificación,20,outputs/tables/ejemplos_funcion_final.csv; scripts/predict_tweet.py; models/modelo_final.joblib; models/metadata_final.json,sí,
+Sentimiento positivo/negativo/neutral,10,outputs/tables/sentimiento_distribucion.csv; outputs/figures/sentimiento_final.png,sí,
+Variable de negatividad,5,outputs/tables/negatividad_definicion.csv; outputs/tables/comparacion_negatividad_diferencias.csv,sí,
+Resultados y discusión,15,outputs/tables/analisis_errores.csv; outputs/tables/contraste_estadistico.csv; reports/informe_final.pdf; notebooks/Lab5_Completo.ipynb,sí,

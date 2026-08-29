@@ -807,32 +807,29 @@ def stage_rubric_evidence() -> pd.DataFrame:
     """Enlaza cada criterio de la rúbrica con el archivo que lo respalda."""
 
     rows = [
-        ("EDA", 15, "outputs/figures/eda_panorama.png; outputs/tables/eda_por_clase.csv"),
-        ("Limpieza y preprocesamiento", 10, "outputs/tables/auditoria_limpieza.csv; outputs/tables/ejemplos_preprocesamiento.csv"),
-        ("N-gramas, frecuencias y probabilidades", 10, "outputs/tables/unigramas_target_*.csv; bigramas_*; trigramas_*"),
-        ("Modelos clasificadores", 15, "outputs/tables/metricas_todos_los_modelos.csv; outputs/figures/modelo_final.png"),
-        ("Función de clasificación", 20, "outputs/tables/ejemplos_funcion_final.csv; scripts/predict_tweet.py"),
-        ("Sentimiento positivo/negativo/neutral", 10, "outputs/tables/sentimiento_distribucion.csv; outputs/figures/sentimiento_final.png"),
-        ("Variable de negatividad", 5, "outputs/tables/negatividad_definicion.csv; comparacion_negatividad_diferencias.csv"),
-        ("Resultados y discusión", 15, "outputs/tables/analisis_errores.csv; contraste_estadistico.csv; reports/informe_final.pdf"),
+        ("EDA", 15, [FIGURES / "eda_panorama.png", TABLES / "eda_por_clase.csv"]),
+        ("Limpieza y preprocesamiento", 10, [TABLES / "auditoria_limpieza.csv", TABLES / "ejemplos_preprocesamiento.csv"]),
+        ("N-gramas, frecuencias y probabilidades", 10, [TABLES / "unigramas_target_1.csv", TABLES / "bigramas_target_1.csv", TABLES / "trigramas_target_1.csv"]),
+        ("Modelos clasificadores", 15, [TABLES / "metricas_todos_los_modelos.csv", FIGURES / "modelo_final.png"]),
+        ("Función de clasificación", 20, [TABLES / "ejemplos_funcion_final.csv", ROOT / "scripts" / "predict_tweet.py", MODELS / "modelo_final.joblib", MODELS / "metadata_final.json"]),
+        ("Sentimiento positivo/negativo/neutral", 10, [TABLES / "sentimiento_distribucion.csv", FIGURES / "sentimiento_final.png"]),
+        ("Variable de negatividad", 5, [TABLES / "negatividad_definicion.csv", TABLES / "comparacion_negatividad_diferencias.csv"]),
+        ("Resultados y discusión", 15, [TABLES / "analisis_errores.csv", TABLES / "contraste_estadistico.csv", ROOT / "reports" / "informe_final.pdf", ROOT / "notebooks" / "Lab5_Completo.ipynb"]),
     ]
-    evidence = pd.DataFrame(rows, columns=["criterio", "puntos", "evidencia"])
-    missing = []
-    for path in (
-        TABLES / "sentimiento_distribucion.csv",
-        TABLES / "top10_positivos.csv",
-        TABLES / "top10_negativos.csv",
-        TABLES / "contraste_estadistico.csv",
-        TABLES / "negatividad_definicion.csv",
-        TABLES / "comparacion_negatividad_diferencias.csv",
-        TABLES / "metricas_todos_los_modelos.csv",
-        TABLES / "analisis_errores.csv",
-        TABLES / "ejemplos_funcion_final.csv",
-        MODELS / "modelo_final.joblib",
-        MODELS / "metadata_final.json",
-    ):
-        if not path.exists():
-            missing.append(str(path.relative_to(ROOT)))
+    evidence_rows = []
+    for criterion, points, paths in rows:
+        relative = [str(path.relative_to(ROOT)).replace("\\", "/") for path in paths]
+        missing_paths = [name for name, path in zip(relative, paths) if not path.exists()]
+        evidence_rows.append(
+            {
+                "criterio": criterion,
+                "puntos": points,
+                "evidencia": "; ".join(relative),
+                "generado": "sí" if not missing_paths else "no",
+                "faltantes": "; ".join(missing_paths),
+            }
+        )
+    evidence = pd.DataFrame(evidence_rows)
     # El EDA, los n-gramas y las nubes de palabras se generan en run_advance.py.
     # Se verifican aquí porque la evidencia de rúbrica los cita: si faltaran, el
     # informe quedaría apuntando a archivos inexistentes.
@@ -855,10 +852,7 @@ def stage_rubric_evidence() -> pd.DataFrame:
             f"{absent}. Ejecute primero: python3 scripts/run_advance.py"
         )
 
-    evidence["generado"] = "sí"
-    evidence.to_csv(TABLES / "evidencia_rubrica.csv", index=False)
-    if missing:
-        raise RuntimeError(f"Faltan artefactos obligatorios: {missing}")
+    evidence.to_csv(TABLES / "evidencia_rubrica.csv", index=False, lineterminator="\n")
     return evidence
 
 
@@ -903,7 +897,7 @@ def main() -> int:
     catalog, fitted, comparison = stage_candidate_models(sentiment)
     delta_f1 = comparison.differences.loc[comparison.differences["metrica"] == "f1", "diferencia_absoluta"].iloc[0]
     delta_auc = comparison.differences.loc[comparison.differences["metrica"] == "roc_auc", "diferencia_absoluta"].iloc[0]
-    print(f"[6/9] Reentrenamiento B-A · ΔF1={delta_f1:+.6f} ΔROC-AUC={delta_auc:+.6f}")
+    print(f"[6/9] Reentrenamiento B-A · delta F1={delta_f1:+.6f} delta ROC-AUC={delta_auc:+.6f}")
 
     winner, winning_row = stage_final_model(catalog, fitted, comparison, sentiment)
     print(

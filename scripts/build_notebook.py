@@ -1,6 +1,9 @@
-"""Construye el notebook narrativo del avance a partir de resultados reproducibles."""
+"""Construye el notebook narrativo final del Laboratorio 5.
 
-from __future__ import annotations
+El notebook consume exclusivamente artefactos reproducibles generados por
+``run_advance.py`` y ``run_final.py``. Después de construirlo puede ejecutarse
+con nbconvert para guardar todas las tablas y figuras como salidas visibles.
+"""
 
 from pathlib import Path
 
@@ -8,10 +11,10 @@ import nbformat as nbf
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "notebooks" / "Lab5_Avance_75.ipynb"
+OUTPUT = ROOT / "notebooks" / "Lab5_Completo.ipynb"
 
 
-def md(text: str):
+def markdown(text: str):
     return nbf.v4.new_markdown_cell(text.strip())
 
 
@@ -19,228 +22,262 @@ def code(text: str):
     return nbf.v4.new_code_cell(text.strip())
 
 
-def main() -> None:
+def main() -> int:
     notebook = nbf.v4.new_notebook()
     notebook["metadata"] = {
         "kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-        "language_info": {"name": "python", "version": "3.11+"},
-        "lab5": {"entrega": "avance", "porcentaje": 75, "random_state": 42},
+        "language_info": {"name": "python", "version": "3.11"},
+        "lab5": {"entrega": "final", "porcentaje": 100, "random_state": 42},
     }
-    notebook["cells"] = [
-        md(
-            r"""
-<style>
-:root{--ink:#102a43;--blue:#2563eb;--teal:#0f9d91;--soft:#eef5ff;--gold:#f59e0b}
-.jp-Notebook{font-family:Inter,Segoe UI,sans-serif;color:var(--ink)}
-.hero{padding:38px;border-radius:22px;background:linear-gradient(125deg,#0b1f3a,#164e63 58%,#0f9d91);color:white;box-shadow:0 14px 35px #102a4326}
-.hero h1{font-size:2.35rem;margin:.2rem 0}.hero .tag{display:inline-block;padding:7px 13px;border-radius:99px;background:#ffffff20;border:1px solid #ffffff45;font-weight:700}
-.team{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}.team div{background:#ffffff14;padding:12px;border-radius:12px}
-.section{margin:26px 0 10px;padding:16px 20px;border-left:6px solid var(--blue);border-radius:12px;background:linear-gradient(90deg,var(--soft),#fff)}
-.note{padding:14px 18px;border-radius:12px;background:#ecfdf5;border:1px solid #99f6e4}.pending{padding:14px 18px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa}
-table{border-radius:10px;overflow:hidden}.dataframe thead th{background:#16324f!important;color:white!important}.dataframe tbody tr:nth-child(even){background:#f4f8fc}
-@media(max-width:800px){.team{grid-template-columns:1fr}}
-</style>
-<div class="hero">
-  <span class="tag">AVANCE REPRODUCIBLE · 75%</span>
-  <h1>Laboratorio 5</h1>
-  <h2>Minería de Textos y Análisis de Sentimientos</h2>
-  <p>Clasificación de tweets sobre desastres reales mediante NLP y aprendizaje automático.</p>
-  <div class="team">
-    <div><b>Jorge Gabriel Palacios Sales</b><br>231385</div>
-    <div><b>Pablo Daniel Barillas Moreno</b><br>22193</div>
-    <div><b>Roberto Emiliano Otoniel</b><br>23968</div>
-  </div>
-  <p><b>Universidad del Valle de Guatemala</b> · Data Science · Sección 10 · Grupo 1</p>
-</div>
-"""
-        ),
-        md(
-            """
-<div class="section"><h2>1 · Alcance y reproducibilidad</h2></div>
 
-Este avance cubre la descripción de los datos, limpieza explicada, exploración, probabilidades de unigramas, bigramas y trigramas, comparación preliminar de modelos, función de inferencia y una primera lectura de sentimiento. Todas las cifras que se muestran provienen de los artefactos generados por `scripts/run_advance.py`; no se escribieron manualmente en el notebook.
-"""
-        ),
-        code(
-            """
+    cells = [
+        markdown(r"""
+<style>
+:root{--navy:#102a43;--blue:#2563eb;--teal:#0f9d91;--red:#dc2626;--ink:#243b53;--soft:#f1f5f9}
+.hero{padding:34px;border-radius:20px;background:linear-gradient(135deg,var(--navy),#1d4ed8);color:white;box-shadow:0 12px 28px #102a4333;margin-bottom:22px}
+.hero h1{font-size:2.35rem;margin:.2rem 0}.hero p{font-size:1.05rem;opacity:.92}.tag{display:inline-block;padding:6px 12px;border-radius:999px;background:#ffffff22;border:1px solid #ffffff55;font-weight:700;letter-spacing:.05em}
+.section{border-left:6px solid var(--teal);padding:7px 16px;margin:30px 0 14px;background:linear-gradient(90deg,#e6fffa,white);border-radius:0 12px 12px 0}.section h2{color:var(--navy);margin:.2rem 0}
+.insight,.warning,.method{padding:14px 17px;border-radius:12px;margin:14px 0}.insight{background:#ecfdf5;border:1px solid #6ee7b7}.warning{background:#fff7ed;border:1px solid #fdba74}.method{background:#eff6ff;border:1px solid #93c5fd}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}.metric{background:white;border:1px solid #dbeafe;border-radius:12px;padding:13px;text-align:center;box-shadow:0 4px 12px #102a4311}.metric b{font-size:1.35rem;color:var(--blue)}
+.footer{margin-top:32px;padding:18px;text-align:center;border-top:1px solid #cbd5e1;color:#52667a}
+</style>
+
+<div class="hero">
+  <span class="tag">ENTREGA FINAL · 100%</span>
+  <h1>Laboratorio 5 · Minería de Textos y Análisis de Sentimientos</h1>
+  <p>Clasificación reproducible de tweets sobre desastres reales</p>
+  <p><b>Universidad del Valle de Guatemala</b> · Data Science · Sección 10 · Grupo 1</p>
+  <p>Jorge Gabriel Palacios Sales — 231385 · Pablo Daniel Barillas Moreno — 22193 · Roberto Emiliano Otoniel — 23968</p>
+</div>
+"""),
+        markdown(r"""
+<div class="section"><h2>1 · Propósito y preguntas de análisis</h2></div>
+
+El objetivo es identificar si un tweet describe un desastre real (`target = 1`) o si utiliza lenguaje similar fuera de ese contexto (`target = 0`). El flujo responde cuatro preguntas: ¿qué vocabulario distingue las clases?, ¿qué modelo generaliza mejor?, ¿los desastres se expresan con mayor negatividad? y ¿esa negatividad mejora la predicción?
+
+<div class="method"><b>Protocolo reproducible.</b> Todas las comparaciones utilizan una división estratificada 80/20 y <code>random_state=42</code>. Las cifras se leen de archivos generados por los scripts del repositorio; no se escriben manualmente.</div>
+"""),
+        code(r"""
 from pathlib import Path
-import json
+import json, sys
 import joblib
-import matplotlib.pyplot as plt
 import pandas as pd
-from IPython.display import HTML, Image, display
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from IPython.display import Image, display
 
 ROOT = Path.cwd()
-if not (ROOT / "data" / "raw" / "train.csv").exists():
+if not (ROOT / "data").exists():
     ROOT = ROOT.parent
-
-TABLES = ROOT / "outputs" / "tables"
-FIGURES = ROOT / "outputs" / "figures"
-
-# CSS también incrustado desde código para conservar el estilo en ejecución.
-display(HTML(
-    "<style>"
-    ".metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}"
-    ".metric{padding:16px;border-radius:14px;background:#f8fbff;border:1px solid #d8e6f5;text-align:center}"
-    ".metric b{display:block;font-size:1.55rem;color:#2563eb}.ok{color:#047857;font-weight:700}"
-    "</style>"
-))
-print(f"Raíz del proyecto: {ROOT}")
-"""
-        ),
-        md('<div class="section"><h2>2 · Datos y análisis exploratorio</h2></div>'),
-        code(
-            """
-distribution = pd.read_csv(TABLES / "distribucion_target.csv")
-schema = pd.read_csv(TABLES / "dataset_esquema.csv")
-display(HTML("<h3>Distribución de la variable objetivo</h3>"))
-display(distribution.style.format({"porcentaje": "{:.2f}%"}))
-display(HTML("<h3>Esquema y valores faltantes</h3>"))
-display(schema)
-display(Image(filename=str(FIGURES / "eda_panorama.png"), width=1050))
-"""
-        ),
-        md(
-            """
-El corpus contiene **7,613 tweets**: 4,342 (57.03%) no describen un desastre real y 3,271 (42.97%) sí. El desbalance es moderado, por lo que se usa partición estratificada y se reportan F1, recall, F1 macro y ROC-AUC además de exactitud. `location` es principalmente un campo auxiliar: su ausencia no impide explotar el texto.
-"""
-        ),
-        code(
-            """
-display(Image(filename=str(FIGURES / "eda_marcadores_sociales.png"), width=1000))
-display(Image(filename=str(FIGURES / "eda_keywords.png"), width=1000))
-"""
-        ),
-        md(
-            """
-<div class="section"><h2>3 · Preprocesamiento auditable</h2></div>
-
-Se crean dos representaciones con propósitos distintos:
-
-1. **Clasificación:** minúsculas, contracciones expandidas, eliminación de URL y menciones, conservación de la palabra del hashtag, eliminación de puntuación/dígitos y stopwords. Las negaciones (`no`, `not`, `never`) y el token `911` se preservan porque tienen información semántica.
-2. **Sentimiento:** limpieza ligera; conserva puntuación, emojis y negaciones para no borrar señales afectivas que VADER necesita.
-
-Esta separación evita el error metodológico de calcular sentimiento sobre texto excesivamente depurado.
-"""
-        ),
-        code(
-            """
-examples = pd.read_csv(TABLES / "ejemplos_preprocesamiento.csv")
-audit = pd.read_csv(TABLES / "auditoria_limpieza.csv")
-display(examples[["target", "text", "clean_text"]].head(8))
-display(HTML("<h3>Controles automáticos de limpieza</h3>"))
-display(audit)
-"""
-        ),
-        md('<div class="section"><h2>4 · N-gramas y probabilidades</h2></div>'),
-        code(
-            """
-display(Image(filename=str(FIGURES / "ngramas_por_clase.png"), width=1100))
-display(Image(filename=str(FIGURES / "unigramas_distintivos.png"), width=1000))
-"""
-        ),
-        md(
-            r"""
-Para cada clase y orden (n), la probabilidad empírica se calcula como
-
-\[
-P(g\mid c)=\frac{f(g,c)}{\sum_{g'}f(g',c)}.
-\]
-
-No se confunde frecuencia bruta con probabilidad: ambos valores están disponibles en los CSV. Los bigramas como *suicide bomber*, *oil spill* y *northern california* concentran contexto más específico para desastre que palabras aisladas. El cociente logarítmico suavizado complementa el ranking y señala vocabulario distintivo de cada clase.
-"""
-        ),
-        code(
-            """
-for target, label in [(0, "No desastre"), (1, "Desastre real")]:
-    table = pd.read_csv(TABLES / f"bigramas_target_{target}.csv").head(10)
-    display(HTML(f"<h3>{label}: diez bigramas principales</h3>"))
-    display(table.style.format({"probabilidad": "{:.4%}"}))
-
-display(Image(filename=str(FIGURES / "nube_palabras_target_0.png"), width=850))
-display(Image(filename=str(FIGURES / "nube_palabras_target_1.png"), width=850))
-"""
-        ),
-        md('<div class="section"><h2>5 · Modelos preliminares</h2></div>'),
-        code(
-            """
-metrics = pd.read_csv(TABLES / "metricas_modelos_preliminares.csv")
-best = metrics.iloc[0]
-summary_html = (
-    '<div class="metric-grid">'
-    f'<div class="metric"><span>Mejor modelo</span><b style="font-size:1rem">{best["modelo"]}</b></div>'
-    f'<div class="metric"><span>Exactitud</span><b>{best["accuracy"]:.2%}</b></div>'
-    f'<div class="metric"><span>F1 desastre</span><b>{best["f1"]:.3f}</b></div>'
-    f'<div class="metric"><span>ROC-AUC</span><b>{best["roc_auc"]:.3f}</b></div>'
-    '</div>'
-)
-display(HTML(summary_html))
-display(metrics.style.format({c: "{:.3f}" for c in ["accuracy", "precision", "recall", "f1", "f1_macro", "roc_auc"]}))
-display(Image(filename=str(FIGURES / "modelos_comparacion.png"), width=1000))
-display(Image(filename=str(FIGURES / "modelos_matrices_confusion.png"), width=1100))
-display(Image(filename=str(FIGURES / "modelos_curvas_roc.png"), width=900))
-"""
-        ),
-        md(
-            """
-Los cuatro modelos usan la misma división estratificada 80/20 (`random_state=42`): 6,090 observaciones para entrenamiento y 1,523 para prueba. La **regresión logística** obtiene el mejor F1 (0.781), con recall 0.777 y ROC-AUC 0.867. El SVM calibrado es ligeramente más preciso (0.807) cuando predice desastre, pero deja más falsos negativos. Esta es una selección preliminar; la afinación definitiva forma parte del 25% final.
-"""
-        ),
-        md('<div class="section"><h2>6 · Función para clasificar tweets nuevos</h2></div>'),
-        code(
-            """
-import sys
 sys.path.insert(0, str(ROOT / "src"))
-from lab5_text.modeling import predict_tweet
 
-model = joblib.load(ROOT / "models" / "modelo_preliminar.joblib")
-analyzer = SentimentIntensityAnalyzer()
-samples = [
-    "Massive fire near the city, residents are evacuating now!",
-    "That movie was a total disaster lol 😂",
-    "Emergency services report flooding on the highway.",
+from lab5_text.analysis import validate_dataset
+from lab5_text.final_model import classify_raw_tweet
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+TABLES, FIGURES = ROOT / "outputs" / "tables", ROOT / "outputs" / "figures"
+pd.set_option("display.max_colwidth", 110)
+
+TABLE_STYLES = [
+    {"selector":"th", "props":[("background-color","#102a43"),("color","white"),("font-weight","700"),("text-align","left")]},
+    {"selector":"td", "props":[("border-bottom","1px solid #dbeafe"),("padding","8px")]},
+    {"selector":"tr:nth-child(even)", "props":[("background-color","#f8fafc")]},
 ]
-predictions = pd.DataFrame([predict_tweet(model, text, analyzer) for text in samples])
-display(predictions.style.format({"probabilidad_desastre": "{:.2%}", "polaridad": "{:.3f}"}))
-"""
-        ),
-        md(
-            """
-La función recibe **texto crudo**, aplica internamente el preprocesamiento y devuelve una clase comprensible junto con su probabilidad. El ejemplo de la película demuestra por qué la palabra *disaster* por sí sola no basta: el contexto completo disminuye la probabilidad de desastre real.
-"""
-        ),
-        md('<div class="section"><h2>7 · Sentimiento exploratorio</h2></div>'),
-        code(
-            """
-sentiment_summary = pd.read_csv(TABLES / "sentimiento_resumen_por_clase.csv")
-display(sentiment_summary.style.format({"mean": "{:.3f}", "median": "{:.3f}", "std": "{:.3f}"}))
-display(Image(filename=str(FIGURES / "sentimiento_exploratorio.png"), width=1050))
-"""
-        ),
-        md(
-            """
-La polaridad media es más negativa en tweets de desastre real (−0.266) que en los que no lo son (−0.052). En este avance se presenta como evidencia descriptiva, no causal: la comparación formal, los diez extremos y el análisis de la variable de negatividad se reservan para la entrega final.
-"""
-        ),
-        md(
-            """
-<div class="section"><h2>8 · Estado del avance</h2></div>
-<div class="note"><b>Completado (75%)</b><br>Datos y EDA; limpieza auditable; unigramas, bigramas y trigramas con probabilidades; nubes de palabras; cuatro modelos comparables; métricas y errores; función de inferencia; sentimiento descriptivo inicial.</div>
-<br>
-<div class="pending"><b>Reservado para la entrega final (25%)</b><br>Top 10 positivo/negativo con interpretación; contraste estadístico por clase; ingeniería de la variable de negatividad y reentrenamiento; ajuste final, análisis de errores y conclusiones definitivas.</div>
+def show_table(frame, precision=3):
+    display(frame.style.format(precision=precision).set_table_styles(TABLE_STYLES).hide(axis="index"))
 
-### Conclusión provisional
+summary = json.loads((TABLES / "resumen_final.json").read_text(encoding="utf-8"))
+print("Entorno y utilidades cargados correctamente.")
+"""),
+        markdown(r"""
+<div class="section"><h2>2 · Datos</h2></div>
 
-El texto permite separar tweets de desastres reales con un desempeño sustancialmente superior al baseline. La regresión logística ofrece el mejor equilibrio preliminar y constituye una base transparente para la fase final, en la que se probará si el sentimiento aporta señal predictiva incremental.
-"""
-        ),
+Se usa `train.csv` de la competencia *Natural Language Processing with Disaster Tweets*. Sus columnas son `id`, `keyword`, `location`, `text` y `target`. `keyword` y `location` pueden faltar; `text` y `target` son indispensables. `test.csv` no se emplea para evaluar porque no incluye la etiqueta objetivo.
+"""),
+        code(r"""
+data = pd.read_csv(ROOT / "data" / "raw" / "train.csv")
+validate_dataset(data)
+distribution = pd.read_csv(TABLES / "distribucion_target.csv")
+print(f"Filas: {len(data):,} · Columnas: {data.shape[1]} · Duplicados exactos: {data.duplicated().sum()}")
+print("Valores faltantes por columna:")
+display(data.isna().sum().to_frame("faltantes").T)
+show_table(distribution)
+display(Image(filename=str(FIGURES / "eda_panorama.png"), width=980))
+"""),
+        markdown(r"""
+<div class="insight"><b>Lectura.</b> Hay 4,342 tweets sin desastre (57.06%) y 3,271 con desastre (42.94%). El desbalance es moderado; por ello, además de exactitud se reportan precisión, recall, F1, F1 macro y ROC–AUC.</div>
+
+<div class="section"><h2>3 · Limpieza y preprocesamiento</h2></div>
+
+Para modelar se normaliza a minúsculas, se reemplazan URL y menciones por marcadores, se separan hashtags, se eliminan caracteres no informativos y se reducen espacios. Se conserva una segunda versión ligera para VADER, porque negaciones, signos, mayúsculas, emojis y emoticonos aportan información de sentimiento. La lista de palabras vacías se audita de forma explícita para reconocer posibles pérdidas de vocabulario temático.
+"""),
+        code(r"""
+cleaning = pd.read_csv(TABLES / "ejemplos_preprocesamiento.csv").head(8)
+audit = pd.read_csv(TABLES / "auditoria_limpieza.csv")
+stopwords = pd.read_csv(TABLES / "auditoria_stopwords.csv")
+show_table(cleaning)
+print("Resumen de transformaciones:")
+show_table(audit)
+print("Palabras de contenido eliminadas por la lista Glasgow (muestra):")
+show_table(stopwords.query("es_palabra_de_contenido == True").head(10))
+"""),
+        markdown(r"""
+<div class="warning"><b>Limitación controlada.</b> La lista estándar de scikit-learn contiene términos con posible carga temática, como <code>fire</code>. Se cuantifica esa pérdida y se mantiene fija en todos los modelos para garantizar una comparación justa.</div>
+
+<div class="section"><h2>4 · Frecuencias, n-gramas y contexto</h2></div>
+
+Las frecuencias se calculan por clase para unigramas, bigramas y trigramas. Además del conteo, se conserva la probabilidad condicional dentro de cada clase. Los n-gramas permiten distinguir frases de emergencia de usos figurados que una palabra aislada no separa adecuadamente.
+"""),
+        code(r"""
+for ngram, label in [("unigramas", "Unigramas"), ("bigramas", "Bigramas"), ("trigramas", "Trigramas")]:
+    print(label, "más frecuentes en desastres reales")
+    show_table(pd.read_csv(TABLES / f"{ngram}_target_1.csv").head(10))
+display(Image(filename=str(FIGURES / "ngramas_por_clase.png"), width=1000))
+"""),
+        markdown(r"""
+Las combinaciones relacionadas con advertencias, incendios, evacuaciones y daños aparecen con mayor fuerza en la clase positiva. En la clase negativa predominan expresiones sociales, titulares ambiguos y lenguaje figurado. Las nubes de palabras son descriptivas; la inferencia se apoya en tablas y modelos, no en el tamaño visual de los términos.
+"""),
+        code(r"""
+display(Image(filename=str(FIGURES / "nube_palabras_target_0.png"), width=470))
+display(Image(filename=str(FIGURES / "nube_palabras_target_1.png"), width=470))
+"""),
+        markdown(r"""
+<div class="section"><h2>5 · Modelos clasificadores</h2></div>
+
+Se comparan un baseline mayoritario, Naive Bayes, regresión logística y SVM calibrado. Todos reciben la misma partición. La regresión logística con TF–IDF ofrece el mejor equilibrio entre sensibilidad y precisión para la clase de interés.
+"""),
+        code(r"""
+metrics = pd.read_csv(TABLES / "metricas_todos_los_modelos.csv")
+cols = [c for c in ["modelo","usa_negatividad","accuracy","precision","recall","f1","f1_macro","roc_auc","tn","fp","fn","tp"] if c in metrics.columns]
+show_table(metrics[cols])
+display(Image(filename=str(FIGURES / "modelos_comparacion.png"), width=1000))
+display(Image(filename=str(FIGURES / "modelos_matrices_confusion.png"), width=1000))
+"""),
+        markdown(r"""
+<div class="metric-grid">
+ <div class="metric"><b>0.813</b><br>Exactitud</div><div class="metric"><b>0.781</b><br>F1 desastre</div>
+ <div class="metric"><b>0.809</b><br>F1 macro</div><div class="metric"><b>0.867</b><br>ROC–AUC</div>
+</div>
+
+<div class="section"><h2>6 · Función de clasificación para texto crudo</h2></div>
+
+La función final encapsula limpieza, transformación TF–IDF, predicción, probabilidad, sentimiento y negatividad. Así puede probarse con un texto nuevo sin preparar manualmente sus variables.
+"""),
+        code(r"""
+model = joblib.load(ROOT / "models" / "modelo_final.joblib")
+analyzer = SentimentIntensityAnalyzer()
+examples = [
+    "Emergency services report a wildfire evacuation near the city",
+    "That movie was a total disaster but we laughed all night 😂",
+    "Flash flood warning: move to higher ground now!",
+    "Lovely weather for the concert tonight :)"
+]
+predictions = pd.DataFrame([classify_raw_tweet(model, text, analyzer) for text in examples])
+show_table(predictions)
+"""),
+        markdown(r"""
+<div class="section"><h2>7 · Sentimiento positivo, negativo y neutral</h2></div>
+
+VADER asigna cuatro puntajes: negativo, neutral, positivo y `compound`. Se aplican los umbrales originales: positivo si `compound ≥ 0.05`, negativo si `compound ≤ −0.05` y neutral en el intervalo restante. Emoticonos, emojis, signos y mayúsculas permanecen disponibles para este análisis.
+"""),
+        code(r"""
+sentiment = pd.read_csv(TABLES / "sentimiento_distribucion.csv")
+thresholds = pd.read_csv(TABLES / "sentimiento_umbrales.csv")
+show_table(thresholds)
+show_table(sentiment)
+display(Image(filename=str(FIGURES / "sentimiento_final.png"), width=1000))
+"""),
+        markdown(r"""
+En el corpus completo se identifican 3,747 tweets negativos, 1,971 positivos y 1,895 neutrales. El sentimiento describe el tono del mensaje, pero no equivale a la etiqueta de desastre: un reporte factual puede ser neutral y una publicación no relacionada puede expresar fuerte negatividad.
+
+<div class="section"><h2>8 · Diez tweets extremos y sus patrones</h2></div>
+"""),
+        code(r"""
+positive = pd.read_csv(TABLES / "top10_positivos.csv")
+negative = pd.read_csv(TABLES / "top10_negativos.csv")
+print("Diez tweets más positivos")
+show_table(positive[["id","categoria","sentiment_compound","text"]])
+print("Diez tweets más negativos")
+show_table(negative[["id","categoria","sentiment_compound","text"]])
+display(Image(filename=str(FIGURES / "top10_composicion.png"), width=700))
+"""),
+        markdown(r"""
+Siete de los diez extremos negativos corresponden a desastres, mientras que nueve de los diez extremos positivos no corresponden a desastres. Los extremos negativos concentran vocabulario de muerte, lesión, amenaza y destrucción; los positivos incluyen agradecimiento, humor, apoyo y lenguaje promocional. Esta composición respalda una relación entre clase y tono, pero también muestra excepciones suficientes para evitar una regla basada únicamente en sentimiento.
+
+<div class="section"><h2>9 · ¿Los desastres son más negativos?</h2></div>
+
+Se define `negativity = max(−compound, 0)`. Como la distribución contiene muchos ceros y no es normal, se usa Mann–Whitney bilateral. Se acompaña con diferencia de medias, intervalo bootstrap del 95% y delta de Cliff.
+"""),
+        code(r"""
+contrast = pd.read_csv(TABLES / "contraste_estadistico.csv")
+show_table(contrast)
+display(Image(filename=str(FIGURES / "contraste_negatividad.png"), width=1000))
+"""),
+        markdown(r"""
+<div class="insight"><b>Resultado.</b> La negatividad media es 0.337 en desastres y 0.213 en no desastres. La diferencia media es 0.124, con IC bootstrap 95% [0.110, 0.138]. La prueba produce <i>p</i> &lt; 0.001 y δ de Cliff = 0.207: existe evidencia clara de diferencia, pero el tamaño del efecto es pequeño.</div>
+
+<div class="section"><h2>10 · Variable de negatividad y reentrenamiento</h2></div>
+
+El modelo A usa solo TF–IDF; el modelo B agrega `negativity`. La partición, semilla y parámetros de regresión logística permanecen idénticos, de modo que cualquier diferencia pueda atribuirse a la nueva variable.
+"""),
+        code(r"""
+comparison = pd.read_csv(TABLES / "comparacion_negatividad_metricas.csv")
+deltas = pd.read_csv(TABLES / "comparacion_negatividad_diferencias.csv")
+show_table(comparison)
+show_table(deltas)
+display(Image(filename=str(FIGURES / "comparacion_negatividad.png"), width=1000))
+"""),
+        markdown(r"""
+La negatividad aumenta ROC–AUC en apenas 0.0004, pero reduce exactitud en 0.0151, recall en 0.0153 y F1 en 0.0171; además agrega 13 falsos positivos y 10 falsos negativos. Por lo tanto, no se incorpora al modelo definitivo. El resultado negativo del experimento es informativo: una variable puede diferir significativamente entre grupos y aun así no aportar señal incremental a un modelo que ya representa el texto.
+
+<div class="section"><h2>11 · Modelo final y análisis de errores</h2></div>
+"""),
+        code(r"""
+metadata = json.loads((ROOT / "models" / "metadata_final.json").read_text(encoding="utf-8"))
+display(pd.DataFrame([metadata]).T.rename(columns={0:"valor"}))
+display(Image(filename=str(FIGURES / "modelo_final.png"), width=900))
+errors = pd.read_csv(TABLES / "analisis_errores.csv")
+print(f"Falsos positivos: {(errors['tipo_error'] == 'Falso positivo').sum()} · Falsos negativos: {(errors['tipo_error'] == 'Falso negativo').sum()}")
+show_table(errors[["tipo_error","sentiment_label","negativity","probabilidad_desastre","text"]].head(15))
+display(Image(filename=str(FIGURES / "analisis_errores.png"), width=1000))
+"""),
+        markdown(r"""
+Los 139 falsos positivos suelen contener terminología alarmante en contextos figurados, humorísticos o promocionales. Los 146 falsos negativos incluyen mensajes breves, ubicaciones implícitas y reportes que describen hechos con tono neutral. Esto evidencia límites del modelo bolsa-de-palabras: no comprende ironía, temporalidad ni conocimiento del mundo.
+
+### Conclusiones
+
+1. Los n-gramas aportan contexto suficiente para superar ampliamente el baseline sin recurrir a modelos opacos.
+2. La regresión logística con TF–IDF logra el mejor compromiso y queda seleccionada como modelo final.
+3. Los tweets de desastre son, en promedio, más negativos; la diferencia es significativa pero de tamaño pequeño.
+4. La negatividad no mejora la clasificación cuando se añade a TF–IDF, por lo que se descarta del modelo definitivo.
+5. El desempeño debe interpretarse con cautela: el corpus proviene de una competencia, VADER está diseñado para inglés y la validación corresponde a una sola partición estratificada.
+
+### Reproducibilidad y evidencia
+"""),
+        code(r"""
+evidence = pd.read_csv(TABLES / "evidencia_rubrica.csv")
+show_table(evidence)
+print("Modelo final:", (ROOT / "models" / "modelo_final.joblib").exists())
+print("Metadatos:", (ROOT / "models" / "metadata_final.json").exists())
+print("Semilla:", summary["particion"]["semilla"])
+"""),
+        markdown(r"""
+### Referencias
+
+- Hutto, C. J. y Gilbert, E. (2014). *VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text*. ICWSM.
+- Pedregosa, F. et al. (2011). *Scikit-learn: Machine Learning in Python*. Journal of Machine Learning Research, 12, 2825–2830.
+- Salton, G. y Buckley, C. (1988). *Term-weighting approaches in automatic text retrieval*. Information Processing & Management, 24(5), 513–523.
+- Kaggle. *Natural Language Processing with Disaster Tweets*. https://www.kaggle.com/competitions/nlp-getting-started
+- Scikit-learn Developers. *Working With Text Data*. https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
+
+<div class="footer">Laboratorio 5 · Grupo 1 · Data Science, Sección 10 · Entrega final reproducible</div>
+"""),
     ]
 
+    notebook["cells"] = cells
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     nbf.write(notebook, OUTPUT)
-    print(f"Notebook creado: {OUTPUT}")
+    print(f"Notebook final construido: {OUTPUT.relative_to(ROOT)}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -1,0 +1,63 @@
+{
+  "modelo": "A · TF-IDF sin negatividad",
+  "familia": "reentrenamiento",
+  "usa_negatividad": false,
+  "regla_seleccion": "Máximo F1 de la clase desastre; ROC-AUC desempata si la brecha de F1 < 0.002",
+  "justificacion": "F1 de la clase desastre = 0.780938, superior en 0.017134 al siguiente candidato; la brecha excede la tolerancia de 0.002, por lo que el F1 decide sin necesidad de desempate.",
+  "candidatos_evaluados": [
+    "A · TF-IDF sin negatividad",
+    "B · TF-IDF con negatividad"
+  ],
+  "familia_base_elegida": "Regresión logística",
+  "familia_base_criterio": "Mejor F1 de la clase desastre entre los cuatro modelos preliminares (0.780938)",
+  "variables": {
+    "texto": "clean_text (limpieza de clasificación sobre el tweet crudo)",
+    "numerica": null
+  },
+  "parametros": {
+    "tfidf": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "max_df": 0.98,
+      "sublinear_tf": true,
+      "max_features": 35000
+    },
+    "logistic_regression": {
+      "C": 2.0,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "random_state": 42
+    }
+  },
+  "semilla": 42,
+  "particiones": {
+    "estrategia": "train_test_split estratificado 80/20",
+    "entrenamiento": 6090,
+    "validacion": 1523,
+    "desastre_pct_entrenamiento": 42.972085385878486,
+    "desastre_pct_validacion": 42.94156270518713
+  },
+  "metricas_validacion": {
+    "accuracy": 0.8128693368351937,
+    "precision": 0.7851622874806801,
+    "recall": 0.7767584097859327,
+    "f1": 0.7809377401998463,
+    "f1_macro": 0.8088069789824446,
+    "roc_auc": 0.8666346427930448,
+    "tn": 730,
+    "fp": 139,
+    "fn": 146,
+    "tp": 508
+  },
+  "dataset": {
+    "archivo": "data/raw/train.csv",
+    "sha256": "61111c6dc31eaffa34d1e1fa62e2395325c9bc3b38bba1941a5f1ed9b3fa60df",
+    "filas": 7613
+  },
+  "artefacto": "models/modelo_final.joblib",
+  "generado_por": "scripts/run_final.py",
+  "estado": "definitivo"
+}

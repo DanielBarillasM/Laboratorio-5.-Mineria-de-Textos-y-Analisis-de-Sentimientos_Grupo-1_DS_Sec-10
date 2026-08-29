@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lab5-text-mining"
-version = "0.75.0"
-description = "Avance reproducible de minería de textos y clasificación de tweets de desastres."
+version = "1.0.0"
+description = "Entrega final reproducible de minería de textos, sentimiento y clasificación de tweets de desastres."
 requires-python = ">=3.11"
 dependencies = [
   "joblib>=1.4",
@@ -13,6 +13,7 @@ dependencies = [
   "matplotlib>=3.8",
   "numpy>=1.26",
   "pandas>=2.2",
+  "python-docx>=1.1",
   "scikit-learn>=1.5",
   "seaborn>=0.13",
   "vaderSentiment>=3.3.2",
